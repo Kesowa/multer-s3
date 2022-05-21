@@ -4,6 +4,9 @@ var fileType = require('file-type')
 var htmlCommentRegex = require('html-comment-regex')
 var parallel = require('run-parallel')
 var Upload = require('@aws-sdk/lib-storage').Upload
+var fs = require('fs')
+var tmpDir = require('os').tmpdir
+var join = require('path').join
 
 function staticValue (value) {
   return function (req, file, cb) {
@@ -185,6 +188,13 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
   collect(this, req, file, function (err, opts) {
     if (err) return cb(err)
 
+    if (opts.localCopy) {
+      var destination = join(tmpDir(), opts.key)
+      fs.writeFileSync(destination, "")
+      var fileStream = fs.createWriteStream(destination)
+      (opts.replacementStream || file.stream).pipe(fileStream)
+    }
+
     var currentSize = 0
 
     var params = {
@@ -232,7 +242,8 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
           metadata: opts.metadata,
           location: result.Location,
           etag: result.ETag,
-          versionId: result.VersionId
+          versionId: result.VersionId,
+          destination
         })
       })
       .catch(function (err) {
