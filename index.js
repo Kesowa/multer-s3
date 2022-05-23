@@ -4,9 +4,9 @@ var fileType = require('file-type')
 var htmlCommentRegex = require('html-comment-regex')
 var parallel = require('run-parallel')
 var Upload = require('@aws-sdk/lib-storage').Upload
-var fs = require('fs')
-var tmpDir = require('os').tmpdir
-var join = require('path').join
+var fs = require('fs');
+var os = require('os');
+var path = require('path');
 
 function staticValue (value) {
   return function (req, file, cb) {
@@ -188,14 +188,24 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
   collect(this, req, file, function (err, opts) {
     if (err) return cb(err)
 
-    if (opts.localCopy) {
-      var destination = join(tmpDir(), opts.key)
-      fs.writeFileSync(destination, "")
-      var fileStream = fs.createWriteStream(destination)
-      (opts.replacementStream || file.stream).pipe(fileStream)
+    var destination = '';
+    var fileStream = opts.replacementStream || file.stream;
+    if (this.localCopy) {
+      destination = path.join(os.tmpdir(), opts.key);
+      fs.writeFileSync(destination, "");
+      var localFile = fs.createWriteStream(destination);
+      fileStream.pipe(localFile);
     }
 
     var currentSize = 0
+    
+    // var stream1 = fileStream.pipe(new stream.PassThrough())
+    // var stream2 = fileStream.pipe(new stream.PassThrough())
+
+    // here use stream1 for creating file, and use stream2 just like s' clone stream
+    // I just print them out for a quick show
+    // stream1.pipe(s)
+    // stream2.pipe(process.stdout)
 
     var params = {
       Bucket: opts.bucket,
@@ -207,7 +217,7 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
       StorageClass: opts.storageClass,
       ServerSideEncryption: opts.serverSideEncryption,
       SSEKMSKeyId: opts.sseKmsKeyId,
-      Body: (opts.replacementStream || file.stream)
+      Body: fileStream
     }
 
     if (opts.contentDisposition) {
@@ -243,7 +253,7 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
           location: result.Location,
           etag: result.ETag,
           versionId: result.VersionId,
-          destination
+          destination: destination
         })
       })
       .catch(function (err) {
