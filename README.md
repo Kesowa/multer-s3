@@ -4,6 +4,19 @@ Streaming multer storage engine for AWS S3.
 
 This project is mostly an integration piece for existing code samples from Multer's [storage engine documentation](https://github.com/expressjs/multer/blob/master/StorageEngine.md) with a call to S3 as the substitution piece for file system.  Existing solutions I found required buffering the multipart uploads into the actual filesystem which is difficult to scale.
 
+# Customizations
+
+1. Size info for large multipart uploads
+2. Optional local caching
+3. Integrated types, do **NOT** install `@types/multer-s3` separately.
+
+## Local caching
+
+- Pass `localCopy: true` to S3Storage. 
+- `file` will have a `destination` property. 
+- That is a copy of the uploaded file, saved in the /tmp directory.
+- Manually remove it after use
+
 ## AWS SDK Versions
 
 3.x.x releases of multer-s3 use AWS JavaScript SDK v3. Specifically, it uses the Upload class from [@aws-sdk/lib-storage](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/modules/_aws_sdk_lib_storage.html) which in turn calls the modular [S3Client](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/classes/s3client.html).
