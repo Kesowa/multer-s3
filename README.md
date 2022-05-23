@@ -13,7 +13,7 @@ This project is mostly an integration piece for existing code samples from Multe
 ## Local caching
 
 - Pass `localCopy: true` to S3Storage. 
-- `file` will have a `destination` property. 
+- `request.file` will have a `destination` property. 
 - That is a copy of the uploaded file, saved in the /tmp directory.
 - Manually remove it after use
 
