@@ -1,6 +1,6 @@
 {
   "name": "multer-s3",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Streaming multer storage engine for AWS S3",
   "main": "index.js",
   "types": "index.d.ts",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/badunk/multer-s3.git"
+    "url": "git+https://github.com/kesowa/multer-s3.git"
   },
   "keywords": [
     "multer",
@@ -17,12 +17,12 @@
     "amazon",
     "aws"
   ],
-  "author": "badunk",
-  "license": "MIT",
+  "author": "abhemanyus",
+  "license": "GNU",
   "bugs": {
-    "url": "https://github.com/badunk/multer-s3/issues"
+    "url": "https://github.com/kesowa/multer-s3/issues"
   },
-  "homepage": "https://github.com/badunk/multer-s3#readme",
+  "homepage": "https://github.com/kesowa/multer-s3#readme",
   "dependencies": {
     "file-type": "^3.3.0",
     "html-comment-regex": "^1.1.2",
