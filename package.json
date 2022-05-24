@@ -18,7 +18,7 @@
     "aws"
   ],
   "author": "abhemanyus",
-  "license": "GNU",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/kesowa/multer-s3/issues"
   },
