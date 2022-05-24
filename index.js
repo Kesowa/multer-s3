@@ -104,6 +104,11 @@ function collect (storage, req, file, cb) {
 }
 
 function S3Storage (opts) {
+  switch (typeof opts.localCopy) {
+    case 'boolean': this.localCopy = opts.localCopy; break
+    default: throw new TypeError('Expected opts.localCopy to be boolean')
+  }
+  
   switch (typeof opts.s3) {
     case 'object': this.s3 = opts.s3; break
     default: throw new TypeError('Expected opts.s3 to be object')
