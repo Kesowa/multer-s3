@@ -196,7 +196,7 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
     var destination = '';
     var fileStream = opts.replacementStream || file.stream;
     if (this.localCopy) {
-      destination = path.join(os.tmpdir(), opts.key);
+      destination = path.join(os.tmpdir(), path.basename(opts.key));
       fs.writeFileSync(destination, "");
       var localFile = fs.createWriteStream(destination);
       fileStream.pipe(localFile);
