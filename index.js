@@ -6,6 +6,7 @@ var parallel = require('run-parallel')
 var Upload = require('@aws-sdk/lib-storage').Upload
 var DeleteObjectCommand = require('@aws-sdk/client-s3').DeleteObjectCommand
 var util = require('util')
+var path = require('path')
 
 function staticValue (value) {
   return function (req, file, cb) {
@@ -96,7 +97,8 @@ function collect (storage, req, file, cb) {
         replacementStream: replacementStream,
         serverSideEncryption: values[7],
         sseKmsKeyId: values[8],
-        contentEncoding: values[9]
+        contentEncoding: values[9],
+        filename: path.basename(values[1]),
       })
     })
   })
