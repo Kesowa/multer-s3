@@ -238,7 +238,7 @@ S3Storage.prototype._handleFile = function (req, file, cb) {
         location: result.Location,
         etag: result.ETag,
         versionId: result.VersionId,
-        filename: path.basename(key)
+        filename: path.basename(opts.key)
       })
     })
   })
